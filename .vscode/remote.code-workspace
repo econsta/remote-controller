@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"autoHide.autoHidePanel": false,
+		"inlineFold.regex": "(\\/\\*\\*@\\w+\\s+\\{|(?<=\\/\\*\\*@\\w+\\s+\\{.*)\\}\\s*\\w*\\*\\/)",
+		"inlineFold.regexGroup": "1",
+		"inlineFold.maskChar": "",
+		"inlineFold.after": "",
+		"inlineFold.unfoldOnLineSelect": true,
+		"inlineFold.unfoldedOpacity": 1,
+		"debug.inlineValues": "on",
+		"notebook.showFoldingControls": "mouseover",
+		"editor.showFoldingControls": "mouseover",
+		"eslint.quiet": true,
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit"
+		},
+		"eslint.validate": ["javascript"],
+		"editor.detectIndentation": false,
+		"editor.tabSize": 4,
+		"editor.insertSpaces": false,
+		"javascript.format.semicolons": "remove",
+		"javascript.preferences.importModuleSpecifierEnding": "js",
+		"javascript.preferences.quoteStyle": "single",
+		"js/ts.implicitProjectConfig.target": "ESNext",
+		"typescript.surveys.enabled": false,
+		"typescript.preferences.importModuleSpecifierEnding": "js",
+		"autoHide.hideSideBarsOnDebug": false,
+		"autoHide.hidePanelOnDebug": false
+	}
+}

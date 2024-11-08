@@ -1,0 +1,11 @@
+{
+    "name": "remote",
+    "type": "module",
+    "main": "src/remote.js",
+    "scripts": {
+        "test": "node --test --test-force-exit"
+    },
+    "devDependencies": {
+        "fast-check": "^3.22.0"
+    }
+}
