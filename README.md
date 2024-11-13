@@ -184,7 +184,7 @@ let testObj = {	num1: 5, str1: 'foo' }
 </td></tr></table>
 
 #### Properties can be set using a local value without awaiting
-<table><tr><td>
+<table><tr></tr><tr><td>
 
 ```javascript
 testObj.num1 = 2
@@ -193,16 +193,13 @@ console.log(await testObj.num1) // 2
 </td><td>
 
 ```javascript
-let testObj = {	
-	num1: 5,
-	str1: 'foo'
-}
+let testObj = {	num1: 5, str1: 'foo' }
 ```
 
 </td></tr></table>
 
 #### Properties can be set to another remote value
-<table><td>
+<table><tr></tr><tr><td>
 
 ```javascript
 testObj.num1 = testObj.num2
@@ -211,10 +208,7 @@ console.log(await testObj.num1) // 1
 </td><td>
 
 ```javascript
-let testObj = {
-	num1: 5,
-	num2: 1
-}
+let testObj = {	num1: 5, num2: 1 }
 ```
 
 </td></tr></table>
