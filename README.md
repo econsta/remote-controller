@@ -233,6 +233,98 @@ let testObj = {
 
 </td></tr></table>
 
+#### Remote functions can be called using remote values, or a combination of remote and local values
+<table><tr></tr><tr><td>
+
+```javascript
+let val1 = 11
+let res = await testObj.fun1(res, testObj.num1, val1, 7)
+console.log(res) // 140
+```
+</td><td>
+
+```javascript
+let testObj = {	
+	num1: 5,
+	fun1(arg1) {
+		return return arg1 + arg2 + arg3 + arg4 + 100
+	}
+}
+```
+
+</td></tr></table>
+
+#### Objects can be awaited to receive a copy of that object
+<table><tr></tr><tr><td>
+
+```javascript
+let localObj = await testObj.obj1
+console.log(localObj) // { num2: 2, num3: 11}
+```
+</td><td>
+
+```javascript
+let testObj = {	
+	num1: 5,
+	obj1: { num2: 2, num3: 11 }
+}
+```
+
+</td></tr></table>
+
+#### local copies of objects do not effect their remote counterparts, as they are copies
+<table><tr></tr><tr><td>
+
+```javascript
+let localObj = await testObj.obj1
+localObj.num2 = 4
+console.log(await testObj.obj1.num2) // 2
+```
+</td><td>
+
+```javascript
+let testObj = {	
+	num1: 5,
+	obj1: { num2: 2, num3: 11 }
+}
+```
+
+</td></tr></table>
+
+#### all of the above also works for arrays
+<table><tr></tr><tr><td>
+
+```javascript
+console.log(await testObj.arr1)
+```
+</td><td>
+
+```javascript
+let testObj = {	
+	num1: 5,
+	arr1: [-1, -2, -3, -4, -5],
+}
+```
+
+</td></tr></table>
+
+#### all of the above also works for arrays
+<table><tr></tr><tr><td>
+
+```javascript
+console.log(await testObj.arr1)
+```
+</td><td>
+
+```javascript
+let testObj = {	
+	num1: 5,
+	arr1: [-1, -2, -3, -4, -5],
+}
+```
+
+</td></tr></table>
+
 ## API
 
 ## Uses
