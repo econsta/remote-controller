@@ -172,13 +172,16 @@ console.log(res5) // 119
 <table><tr><th>index.js</th><th>worker.js</th></tr><tr><td>
 
 ```javascript
-let num = await testObj.num1 // num = 5
+let num = await testObj.num1
 console.log(num) // 5
 ```
 </td><td>
 
 ```javascript
-let testObj = {	num1: 5, str1: 'foo'}
+let testObj = {	
+	num1: 5, 
+	str1: 'foo'
+}
 ```
 
 </td></tr></table>
@@ -187,13 +190,16 @@ let testObj = {	num1: 5, str1: 'foo'}
 <table><tr><th>index.js</th><th>worker.js</th></tr><tr><td>
 
 ```javascript
-testObj.num1 = 2 // Remote<testObj.num1> = Remote<2>
+testObj.num1 = 2
 console.log(await testObj.num1) // 2
 ```
 </td><td>
 
 ```javascript
-let testObj = {	num1: 5, str1: 'foo'}
+let testObj = {	
+	num1: 5,
+	str1: 'foo'
+}
 ```
 
 </td></tr></table>
@@ -202,13 +208,16 @@ let testObj = {	num1: 5, str1: 'foo'}
 <table><tr><th>index.js</th><th>worker.js</th></tr><tr><td>
 
 ```javascript
-testObj.num1 = testObj.num2 // Remote<testObj.num2> = Remote<1>
-console.log(await testObj.num2) // 1
+testObj.num1 = testObj.num2
+console.log(await testObj.num1) // 1
 ```
 </td><td>
 
 ```javascript
-let testObj = {	num1: 5, num2: 1}
+let testObj = {
+	num1: 5,
+	num2: 1
+}
 ```
 
 </td></tr></table>
