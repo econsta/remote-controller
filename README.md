@@ -166,6 +166,53 @@ let notCallback2 = (arg1) => {
 let res5 = await testObj.fun4(2, fnArg(notCallback2, {localVar})) 
 console.log(res5) // 119
 ```
+## Table
+
+#### To access properties on the remote object they must be awaited
+<table><tr><th>index.js</th><th>worker.js</th></tr><tr><td>
+
+```javascript
+let num = await testObj.num1 // num = 5
+console.log(num) // 5
+```
+</td><td>
+
+```javascript
+let testObj = {	num1: 5, str1: 'foo'}
+```
+
+</td></tr></table>
+
+#### Properties can be set using a local value without awaiting
+<table><tr><th>index.js</th><th>worker.js</th></tr><tr><td>
+
+```javascript
+testObj.num1 = 2 // Remote<testObj.num1> = Remote<2>
+console.log(await testObj.num1) // 2
+```
+</td><td>
+
+```javascript
+let testObj = {	num1: 5, str1: 'foo'}
+```
+
+</td></tr></table>
+
+#### Properties can be set to another remote value
+<table><tr><th>index.js</th><th>worker.js</th></tr><tr><td>
+
+```javascript
+testObj.num1 = testObj.num2 // Remote<testObj.num2> = Remote<1>
+console.log(await testObj.num2) // 1
+```
+</td><td>
+
+```javascript
+let testObj = {	num1: 5, num2: 1}
+```
+
+</td></tr></table>
+
 ## API
 
 ## Uses
