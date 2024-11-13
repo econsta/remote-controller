@@ -178,10 +178,7 @@ console.log(num) // 5
 </td><td>
 
 ```javascript
-let testObj = {	
-	num1: 5, 
-	str1: 'foo'
-}
+let testObj = {	num1: 5, str1: 'foo' }
 ```
 
 </td></tr></table>
