@@ -213,6 +213,26 @@ let testObj = {	num1: 5, num2: 1 }
 
 </td></tr></table>
 
+#### Remote functions can be called using local values as arguments, results must be awaited
+<table><tr></tr><tr><td>
+
+```javascript
+let res = testObj.fun1(7)
+console.log(await res) // 20
+```
+</td><td>
+
+```javascript
+let testObj = {	
+	num1: 5,
+	fun1(arg1) {
+		return arg1 + 13 
+	}
+}
+```
+
+</td></tr></table>
+
 ## API
 
 ## Uses
