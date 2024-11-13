@@ -243,7 +243,7 @@ export function unwrapArg(
 						if (remoter.remoterType == 'Controller') {
 							refs[key] = new Remote(remoter, base.$objectId, base.$path)
 						} else {
-							refs[key] = remoter.IdToObject(base.$objectId, base.$path)
+							refs[key] = remoter.idToObject(base.$objectId, base.$path)
 						}
 						break
 					case 2:

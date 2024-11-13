@@ -142,7 +142,7 @@ export class Controller {
 
 globalThis.functionSymbol = Symbol()
 
-export function fnArg(/**@type {any}*/ scope, /**@type {Function}*/ fn) {
+export function fnArg(/**@type {Function}*/ fn, /**@type {any}*/ scope = {},) {
 	const ret = () => {
 		return {
 			func: fn.toString(),
@@ -155,3 +155,5 @@ export function fnArg(/**@type {any}*/ scope, /**@type {Function}*/ fn) {
 	})
 	return ret
 }
+
+

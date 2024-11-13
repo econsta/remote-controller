@@ -1,16 +1,4 @@
 {
-    "editor.formatOnPaste": true,
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "biomejs.biome",
-    "editor.codeActionsOnSave": {
-        "source.fixAll.biome": "always",
-        "source.organizeImports": "always",
-        "source.sortImports": "always",
-        "source.removeUnused": "always"
-    },
-    "[javascript]": {
-        "editor.defaultFormatter": "biomejs.biome"
-    },
-    "autoHide.hideSideBarsOnDebug": false,
-    "autoHide.hidePanelOnDebug": false
+	"autoHide.hideSideBarsOnDebug": false,
+	"autoHide.hidePanelOnDebug": false
 }

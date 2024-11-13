@@ -1,11 +1,14 @@
 {
-    "name": "remote",
-    "type": "module",
-    "main": "src/remote.js",
-    "scripts": {
-        "test": "node --test --test-force-exit"
-    },
-    "devDependencies": {
-        "fast-check": "^3.22.0"
-    }
+  "name": "remote",
+  "type": "module",
+  "main": "src/remote.js",
+  "scripts": {
+    "start": "node ./tests/examples/server.js",
+    "test": "node --test --test-force-exit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "fast-check": "^3.22.0",
+    "web-worker": "1.2.0"
+  }
 }

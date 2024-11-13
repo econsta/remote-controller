@@ -3,8 +3,7 @@ import * as assert from 'node:assert/strict'
 import * as path from 'node:path'
 import { describe, it } from 'node:test'
 import { Worker } from 'node:worker_threads'
-import { Controller, Receiver } from '../src/remote.js'
-import { PortTransport } from './utils.js'
+import { Controller, Receiver, PortTransport } from '../src/remote.js'
 
 /**
  * @param {TestContext} t

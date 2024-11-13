@@ -69,3 +69,38 @@ export class Transport {
 		}
 	}
 }
+
+export class PortTransport extends Transport {
+	constructor(/**@type {MessagePort}*/ port) {
+		super({
+			adapt: transport => {
+				port.onmessage = event => {
+					transport.onMessage(event.data)
+				}
+			},
+			postMessage: data => {
+				port.postMessage(structuredClone(data))
+			},
+			destroy: () => {
+				port.close()
+			}
+		})
+	}
+}
+
+export class WebSocketTransport extends Transport {
+	constructor(ws) {
+		super({
+			adapt: transport => {
+				ws.onmessage = e => {
+					transport.onMessage(JSON.parse(e.data))
+				}
+			},
+			postMessage: data => {
+				ws.send(JSON.stringify(data))
+			}
+		})
+	}
+}
+
+
