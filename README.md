@@ -8,18 +8,18 @@ $ npm install --save remote-controller
 
 ## Introduction
 
-Whether it is a browser talking to a NodeJs server, or a the main Javascript thread talking to a Webworker, a frightening amount of code is dedicated to solving one fundimental problem: allowing two Javascript instances to communicate with each other.
+Whether it is a browser talking to a NodeJs server, or a the main Javascript thread talking to a Webworker, a frightening amount of code is dedicated to solving one fundamental problem: allowing two Javascript instances to communicate with each other.
 
 This library is an attempt to create the most seamless communication system possible within the limits of the Javascript language. It accomplishes this by allowing you to create a controller for a remote Javascript object that exists on another Javascript instance.
 
-This controller give you access to all of the properties of the remote instance, lets you call its functions with arguments, attach listeners, modify its properties or practically anything you could do a normal object with virtually the same sytax.
+This controller give you access to all the properties of the remote instance, lets you call its functions with arguments, attach listeners, modify its properties or practically anything you could do with a normal object with virtually the same syntax.
 
 
 ## Examples
 
 ### Minimum Example
 
-Here is a bare minumum example, using the built in worker messaging system as the transport layer:
+Here is a bare minimum example, using the built-in worker messaging system as the transport layer:
 
 **worker.js**
 
@@ -44,8 +44,8 @@ let num = await testObj.num1 // num = 5
 // Properties can be set without awaiting
 testObj.num1 = 7
 ```
-### Messager Example
-Here is a simple messager that uses Remote Controller to share an array of messages over a websocket. It shows how you can use built in functions like Array.push() or addEventListener() on remote objects. You can view a working version of this in the examples folder
+### Messenger Example
+Here is a simple messenger that uses Remote Controller to share an array of messages over a websocket. It shows how you can use built-in functions like Array.push() or addEventListener() on remote objects. You can view a working version of this in the examples folder
 #### index.js
 ```javascript
 import { createController } from './remote.js'
@@ -214,7 +214,7 @@ let testObj = {
 
 </td></tr></table>
 
-#### local copies of objects do not effect their remote counterparts, as they are copies
+#### local copies of objects do not affect their remote counterparts, as they are copies
 <table><tr></tr><tr><td>
 
 ```javascript
@@ -250,7 +250,7 @@ let testObj = {
 
 </td></tr></table>
 
-#### nested objects and cirular dependancies also work, however promises and functions on objects will be undefined
+#### nested objects and circular dependencies also work, however promises and functions on objects will be undefined
 <table><tr></tr><tr><td>
 
 ```javascript
@@ -290,7 +290,7 @@ let testObj = {
 
 </td></tr></table>
 
-#### callback functions cannot run on the remote side, fun4 returns undefined bcause it attempts to get the return of a callback function
+#### callback functions cannot run on the remote side, fun4 returns undefined because it attempts to get the return of a callback function
 <table><tr></tr><tr><td>
 
 ```javascript
@@ -402,9 +402,9 @@ new Transport({
 
 ## Uses
 
-This library has potential to be used in any situation where two Javascript instances need to communicate. A major inspiration to this project was the desire to create an enhanced version of Google's [Comlink][comlink] so it should be a perfect fit for any project where that could be used. It is currently in use by Chthonic Software Inc. to centrally manage a browser based peer to peer video streaming network.
+This library has potential to be used in any situation where two Javascript instances need to communicate. A major inspiration to this project was the desire to create an enhanced version of Google's [Comlink][comlink] so it should be a perfect fit for any project where that could be used. It is currently used in production to centrally manage a browser based peer to peer video streaming network.
 
-The most important factor to consider when deciding whether or not to use Remote Controller is security. Because of the amount of power a controller gives over a remote it can be used freely between secured contexts, or from a secure context to control an object in an insecure context, but it should never be used to control an object in a secured context from an insecure context. For example it is perfectly fine to use a server (secured context) to control objects on a user's browser (insecure context), or from the main Javascript thread (secure context) to a worker (secured context). However, an external user's browser (insecure context) should not be given remote control over an object on your server (secured context). Similarly, another user's browser (insecured context) should not be given control over an object in the current user's browser (secured context). 
+The most important factor to consider when deciding to use Remote Controller is security. Because of the amount of power a controller gives over a remote it can be used freely between secured contexts, or from a secure context to control an object in an insecure context, but it should never be used to control an object in a secured context from an insecure context. For example, it is perfectly fine to use a server (secured context) to control objects on a user's browser (insecure context), or from the main Javascript thread (secure context) to a worker (secured context). However, an external user's browser (insecure context) should not be given remote control over an object on your server (secured context). Similarly, another user's browser (insecure context) should not be given control over an object in the current user's browser (secured context). 
 
 ## Further Work
 
@@ -414,7 +414,7 @@ There are two main enhancements that would be valuable for this library
 
 2. Security
 
-Unfortunately due to the complexity of the **Remote** type, current Typescript cannot accurately define all of its features. Hopefully in newer versions of Typescript this will be possible, or some brilliant developer finds a workaround (possilby a LSP extension?).
+Unfortunately due to the complexity of the **Remote** type, current Typescript cannot accurately define all of its features. Hopefully in newer versions of Typescript this will be possible, or some brilliant developer finds a workaround (possibly a LSP extension?).
 
 The main limitation in use for this library is that it shouldn't be used from insecure contexts, but I am fairly certain that a secured version of a Remote could exist which would allow this library to replace something like a REST API. I would really appreciate any ideas or discussions about how this could be achieved. 
 
