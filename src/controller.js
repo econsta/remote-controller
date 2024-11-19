@@ -23,20 +23,27 @@ export class Controller {
 	isPendingFlush = false
 	remoterType = /** @type {const} */ ('Controller')
 
+	finalizeTimerId = -1
+	finalizeIntervalMs = 100
+	/**@type {number[]}*/ finalizeIdQueue = []
+
+
 	constructor(/**@type {Transport}*/ transport) {
 		this.transport = transport
 		transport.remoter = this
-		this.finalizationRegistry = new FinalizationRegistry(id => {
-			/**
-			 * NOTE: There used to be a optimization here to buffer finalized items
-			 * for 100 milliseconds before posting the cleanup command. At time of
-			 * writing the actual cleanup logic was commented out...Deleting
-			 * to make cleanup logic easier.
-			 */
-			this.transport.postMessage({
-				type: 0,
-				ids: [id]
-			})
+		this.finalizationRegistry = new FinalizationRegistry((/**@type {number}*/ id) => {
+			this.finalizeIdQueue.push(id)
+			if (this.finalizeTimerId === -1) {
+				this.finalizeTimerId = 1
+				setTimeout(() => {
+					this.finalizeTimerId = -1
+					this.transport.postMessage({
+						type: 0,
+						ids: this.finalizeIdQueue	
+					})
+					this.finalizeIdQueue = []
+				}, this.finalizeIntervalMs)
+			}
 		})
 	}
 

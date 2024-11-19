@@ -9,6 +9,7 @@
   "devDependencies": {
     "@types/node": "^22.9.0",
     "fast-check": "^3.22.0",
-    "web-worker": "1.2.0"
+    "web-worker": "1.2.0",
+    "ws": "^8.18.0"
   }
 }

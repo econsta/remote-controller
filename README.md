@@ -44,129 +44,71 @@ let num = await testObj.num1 // num = 5
 // Properties can be set without awaiting
 testObj.num1 = 7
 ```
+### Messager Example
+Here is a simple messager that uses Remote Controller to share an array of messages over a websocket. It shows how you can use built in functions like Array.push() or addEventListener() on remote objects. You can view a working version of this in the examples folder
+#### index.js
+```javascript
+import { createController } from './remote.js'
 
-### In-Depth Example
+const input = document.getElementsByTagName('input')[0]
+const button = document.getElementsByTagName('button')[0]
+const messageList = document.getElementById('messages')
+let randomName = (Math.random() + 1).toString(36).substring(7)
 
-Here is an example with a much more complex object and many more operations
+const ws = new WebSocket('ws://localhost:3000')
+let myMessager = createController(ws)
 
-**worker.js**
+ws.addEventListener('open', async () => {
+	button.addEventListener('click', () => {
+		const message = {
+			name: randomName,
+			text: input.value
+		}
+		myMessager.messages.push(message)
+		myMessager.sentMessage(message)
+	})
 
+	myMessager.et.addEventListener('message', async (e) => {
+		let allMessages = await myMessager.messages
+		console.log(e.detail)
+		messageList.innerHTML = ''
+		allMessages.forEach((message) => {
+			const messageDiv = document.createElement('div')
+			messageDiv.innerHTML = `
+			<div>
+				<span style="color: red">${message.name}: </span>
+				<span>${message.text}</span>
+			</div>
+			`
+			messageList.appendChild(messageDiv)
+		})
+	})
+})
+```
+
+#### server.js
 ```javascript
 import { createReceiver } from './remote.js'
+import { WebSocketServer } from 'ws'
 
-let testObj = {
-	num1: 5,
-	num2: 7,
-	num3: 1,
-	obj1: {
-		num3: 2,
-		num4: 11
-	},
-	arr1: [-1, -2, -3, -4, -5],
-	fun1(arg1) {
-		return arg1 + 13 
-	},
-	fun2(arg1, arg2, arg3, arg4) {
-		return arg1 + arg2 + arg3 + arg4 + 100 
-	},
-	fun3(arg1, funArg) {
-		let newArg = arg1 + 5
-		funArg(newArg)
-	},
-	fun4(arg1, funArg) {
-		let newArg = arg1 + 5
-		let res = funArg(newArg)
-		return res
-	},
-	obj2: {
-		str1: 'I am in obj2',
-		circular: {},
-		nested: {
-			str2: 'I am in nested'
-		}
+class MyMessager {
+	messages = []
+	et = new EventTarget()
+
+	sentMessage(message) {
+		this.et.dispatchEvent(new CustomEvent('message', {detail: message}))
 	}
 }
 
-testObj.obj2.circular = testObj
+let myMessager = new MyMessager()
 
-createReceiver(testObj, globalThis)
+const wss = new WebSocketServer({ port: 3000 })
+wss.on('connection', (ws) => {
+	createReceiver(myMessager, ws)
+})
 ```
-**index.js**
 
-```javascript
-import { createController, fnArg } from './remote.js'
-
-let worker = new Worker('worker.js', {type: 'module'})
-let testObj = createController(worker)
-
-// To access properties on the remote object they must be awaited
-let num = await testObj.num1 // num = 5
-console.log(num) // 5
-
-// Properties can be set using a local value without awaiting
-testObj.num1 = 2 // Remote<testObj.num1> = Remote<2>
-console.log(await testObj.num1) // 2
-
-// Properties can be set to another remote value
-testObj.num2 = testObj.num3 // Remote<testObj.num2> = Remote<1>
-console.log(await testObj.num2) // 1
-
-//Remote functions can be called using local values as arguments, results must be awaited
-let res = testObj.fun1(7) // res = Remote<20>
-console.log(await res) // 20
-
-// Remote functions can be called using remote values, or a combination of remote and local values
-let val1 = 11
-let res2 = await testObj.fun2(res, testObj.num1, val1, 7) // res2 = 140
-console.log(res2) // 140
-
-// Objects can be awaited to receive a copy of that object
-let localObj = await testObj.obj1 // localObj = { num3: 2, num4: 11}
-console.log(localObj) // { num3: 2, num4: 11}
-
-// local copies of objects do not effect their remote counterparts, as they are copies
-localObj.num3 = 4
-console.log(await testObj.obj1.num3) // 2
-
-// the same is true for arrays
-console.log(await testObj.arr1) // [-1, -2, -3, -4, -5]
-
-// nested objects and cirular dependancies also work, however promise and functions on objects will be undefined
-let localObj2 = await testObj.obj2 // localObj2 = { str3: "I am in obj2", circular: {…}, nested: {…} }
-console.log(localObj2)
-
-// callback functions can be sent as arguments, and if these functions are called they are run on the controller's side
-let callback = (arg1) => { 
-	console.log(arg1 + 11) // 18
-}
-await testObj.fun3(2, callback) // await ensures this runs synchronously, but is not required for function to run
-
-// callback functions cannot run on the remote side, fun4 returns undefined bcause it attempts to get the return of a callback function
-let callback2 = (arg1) => {
-	let res = arg1 + 12
-	return res
-}
-let res3 = await testObj.fun4(2, callback2)
-console.log(res3) // undefined
-
-// functions can be sent to run on the remote side using the fnArg function, this will allow fun4 to run
-let notCallback = (arg1) => {
-	let res = arg1 + 12
-	return res
-}
-let res4 = await testObj.fun4(2, fnArg(notCallback)) 
-console.log(res4) // 19
-
-// If fnArgs use variables in the local scope, these can be sent with the function in order to run on the remote side
-let localVar = 100
-let notCallback2 = (arg1) => {
-	let res = arg1 + 12 + localVar
-	return res
-}
-let res5 = await testObj.fun4(2, fnArg(notCallback2, {localVar})) 
-console.log(res5) // 119
-```
-## Table
+### In-Depth Examples
 
 #### To access properties on the remote object they must be awaited
 <table><tr><th>index.js</th><th>worker.js</th></tr><tr><td>
@@ -308,11 +250,12 @@ let testObj = {
 
 </td></tr></table>
 
-#### all of the above also works for arrays
+#### nested objects and cirular dependancies also work, however promises and functions on objects will be undefined
 <table><tr></tr><tr><td>
 
 ```javascript
-console.log(await testObj.arr1)
+let localObj2 = await testObj.obj2
+console.log(localObj2) // { str3: "I am in obj2", circular: {…}, nested: {…} }
 ```
 </td><td>
 
@@ -325,7 +268,137 @@ let testObj = {
 
 </td></tr></table>
 
+#### callback functions can be sent as arguments, and if these functions are called they are run on the controller's side
+<table><tr></tr><tr><td>
+
+```javascript
+let callback = (arg1) => { 
+	console.log(arg1 + 11) // 18
+}
+await testObj.fun3(2, callback)
+```
+</td><td>
+
+```javascript
+let testObj = {	
+	fun3(arg1, funArg) {
+		let newArg = arg1 + 5
+		funArg(newArg)
+	},
+}
+```
+
+</td></tr></table>
+
+#### callback functions cannot run on the remote side, fun4 returns undefined bcause it attempts to get the return of a callback function
+<table><tr></tr><tr><td>
+
+```javascript
+let callback2 = (arg1) => {
+	let res = arg1 + 12
+	return res
+}
+let res3 = await testObj.fun4(2, callback2)
+console.log(res3) // undefined
+```
+</td><td>
+
+```javascript
+let testObj = {	
+	fun4(arg1, funArg) {
+		let newArg = arg1 + 5
+		let res = funArg(newArg)
+		return res
+	},
+}
+```
+
+</td></tr></table>
+
+#### functions can be sent to run on the remote side using the fnArg function, this will allow fun4 to run
+<table><tr></tr><tr><td>
+
+```javascript
+let notCallback = (arg1) => {
+	let res = arg1 + 12
+	return res
+}
+let res4 = await testObj.fun4(2, fnArg(notCallback)) 
+console.log(res4) // 19
+```
+</td><td>
+
+```javascript
+let testObj = {	
+	fun4(arg1, funArg) {
+		let newArg = arg1 + 5
+		let res = funArg(newArg)
+		return res
+	},
+}
+```
+
+</td></tr></table>
+
+#### If fnArgs use variables in the local scope, these can be sent with the function in order to run on the remote side
+<table><tr></tr><tr><td>
+
+```javascript
+let localVar = 100
+let notCallback2 = (arg1) => {
+	let res = arg1 + 12 + localVar
+	return res
+}
+let res5 = await testObj.fun4(2, fnArg(notCallback2, {localVar})) 
+console.log(res5) // 119
+```
+</td><td>
+
+```javascript
+let testObj = {	
+	fun4(arg1, funArg) {
+		let newArg = arg1 + 5
+		let res = funArg(newArg)
+		return res
+	},
+}
+```
+
+</td></tr></table>
+
 ## API
+
+### createController(Transport)
+
+Creates the controller using a transport system, and returns the remote object. Use this on the local JavaScript instance.
+
+### createReceiver(Object, Transport)
+
+Creates the receiver using a transport system, and the object you would like the Controller side to have access to. This has no return value. This is used on the remote side.
+
+### Class: Transport
+
+This class represents a transport layer that the Controller or Receiver will be using. There are built in Transport objects for both websockets and workers, but if you would like to use something else you can declare a new Transport for Remote Controller to use.
+
+#### new Transport(config)
+- `config` {Object}
+	- `adapt` {Function} A callback function used to setup message handlers on the underlying transport
+	- `postMessage` {Function} A callback function to send a message over the underlying transport
+	 - `destroy` {Function} An optional teardown method
+
+Here is an example that adapts for Websockets
+```javascript
+new Transport({
+	adapt: transport => {
+		ws.onmessage = e => {
+			transport.onMessage(JSON.parse(e.data))
+		}
+	},
+	postMessage: data => {
+		ws.send(JSON.stringify(data))
+	}
+})
+```
 
 ## Uses
 
@@ -345,8 +418,9 @@ Unfortunately due to the complexity of the **Remote** type, current Typescript c
 
 The main limitation in use for this library is that it shouldn't be used from insecure contexts, but I am fairly certain that a secured version of a Remote could exist which would allow this library to replace something like a REST API. I would really appreciate any ideas or discussions about how this could be achieved. 
 
+## License
+
+[MIT](LICENSE)
+
 [comlink]: https://github.com/GoogleChromeLabs/comlink
 
---
-
-License Apache-2.0

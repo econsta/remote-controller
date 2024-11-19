@@ -1,4 +1,4 @@
-import { createController, fnArg } from './remote.js'
+import { createController, fnArg } from '../../src/remote.js'
 
 let worker = new Worker('worker.js', {type: 'module'})
 let testObj = createController(worker)
@@ -32,7 +32,7 @@ console.log(localObj) // { num3: 2, num4: 11}
 localObj.num3 = 4
 console.log(await testObj.obj1.num3) // 2
 
-// the same is true for arrays
+// all of the above also works for arrays
 console.log(await testObj.arr1) // [-1, -2, -3, -4, -5]
 
 // nested objects and cirular dependancies also work, however promise and functions on objects will be undefined
