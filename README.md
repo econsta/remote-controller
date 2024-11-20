@@ -24,7 +24,7 @@ Here is a bare minimum example, using the built-in worker messaging system as th
 **worker.js**
 
 ```javascript
-import { createReceiver } from './remote.js'
+import { createReceiver } from 'remote-controller'
 
 // Create or chose an existing object to share
 let testObj = {	num1: 5, str1: 'foo'}
@@ -34,7 +34,7 @@ createReceiver(testObj, globalThis)
 **index.js**
 
 ```javascript
-import { createController } from './remote.js'
+import { createController } from 'remote-controller'
 
 let worker = new Worker('worker.js', {type: 'module'})
 
@@ -48,7 +48,7 @@ testObj.num1 = 7
 Here is a simple messenger that uses Remote Controller to share an array of messages over a websocket. It shows how you can use built-in functions like Array.push() or addEventListener() on remote objects. You can view a working version of this in the examples folder
 #### index.js
 ```javascript
-import { createController } from './remote.js'
+import { createController } from 'remote-controller'
 
 const input = document.getElementsByTagName('input')[0]
 const button = document.getElementsByTagName('button')[0]
@@ -88,7 +88,7 @@ ws.addEventListener('open', async () => {
 
 #### server.js
 ```javascript
-import { createReceiver } from './remote.js'
+import { createReceiver } from 'remote-controller'
 import { WebSocketServer } from 'ws'
 
 class MyMessager {

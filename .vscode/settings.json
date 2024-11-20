@@ -1,4 +1,5 @@
 {
 	"autoHide.hideSideBarsOnDebug": false,
-	"autoHide.hidePanelOnDebug": false
+	"autoHide.hidePanelOnDebug": false,
+	"liveServer.settings.port": 5501
 }
