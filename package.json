@@ -3,11 +3,11 @@
 	"version": "1.0.6",
 	"description": "Remote Controller is the easiest way to interact across Websockets, Webworkers and WebRTC. The library is small, dependancy free, performant and powerful.",
   	"keywords": ["WebSockets", "WebWorkers", "Worker", "Network", "Remote"],
-	"homepage": "https://github.com/econst/remote-controller",
-  	"bugs": "https://github.com/econst/remote-controller/issues",
+	"homepage": "https://github.com/econsta/remote-controller",
+  	"bugs": "https://github.com/econsta/remote-controller/issues",
   	"repository": {
     	"type": "git",
-    	"url": "git+https://github.com/websockets/remote-controller.git"
+    	"url": "git+https://github.com/econsta/remote-controller.git"
   	},
   	"license": "MIT",
 	"main": "./src/remote.js",
