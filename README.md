@@ -188,7 +188,7 @@ console.log(res) // 140
 ```javascript
 let testObj = {	
 	num1: 5,
-	fun1(arg1) {
+	fun1(arg1, arg2, arg3, arg4) {
 		return return arg1 + arg2 + arg3 + arg4 + 100
 	}
 }
@@ -260,10 +260,17 @@ console.log(localObj2) // { str3: "I am in obj2", circular: {…}, nested: {…}
 </td><td>
 
 ```javascript
-let testObj = {	
+let testObj = {
 	num1: 5,
-	arr1: [-1, -2, -3, -4, -5],
+	obj2: {
+		str1: 'I am in obj2',
+		circular: {},
+		nested: {
+			str2: 'I am in nested'
+		}
+	}
 }
+testObj.obj2.circular = testObj
 ```
 
 </td></tr></table>
