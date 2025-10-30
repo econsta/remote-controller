@@ -425,9 +425,16 @@ Unfortunately due to the complexity of the **Remote** type, current Typescript c
 
 The main limitation in use for this library is that it shouldn't be used from insecure contexts, but I am fairly certain that a secured version of a Remote could exist which would allow this library to replace something like a REST API. I would really appreciate any ideas or discussions about how this could be achieved. 
 
+## Similar Projects
+
+1. Google's [Comlink][comlink] which served as the inspiration for this project
+
+2. Cloudflare has recently released [Cap'n Web][capnweb], which is a similar concept, which trades flexibility for a more secure environment. This is a good option if you would like to use something similar to replace a REST API
+
 ## License
 
 [MIT](LICENSE)
 
 [comlink]: https://github.com/GoogleChromeLabs/comlink
+[capnweb]: https://github.com/cloudflare/capnweb
 
